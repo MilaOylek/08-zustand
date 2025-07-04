@@ -7,11 +7,10 @@ import { fetchNotes, type FetchNotesResponse } from "@/lib/api";
 import NoteList from "@/components/NoteList/NoteList";
 import Pagination from "@/components/Pagination/Pagination";
 import SearchBox from "@/components/SearchBox/SearchBox";
-import Modal from "@/components/Modal/Modal";
-import NoteForm from "@/components/NoteForm/NoteForm";
 import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
 import ErrorMessage from "@/components/ErrorMessage/ErrorMessage";
 import styles from "./notes.module.css";
+import Link from "next/link";
 
 const PER_PAGE = 12;
 
@@ -29,15 +28,6 @@ export default function Notes({ initialData, tag }: NotesClientProps) {
     setPage(1);
   }, [debouncedQuery]);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleCreateNote = () => {
-    setIsModalOpen(true);
-  };
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
   const { data, isError, isLoading, isFetching, error } = useQuery({
     queryKey: ["notes", debouncedQuery, page, tag],
     queryFn: () =>
@@ -46,12 +36,13 @@ export default function Notes({ initialData, tag }: NotesClientProps) {
     refetchOnMount: false,
     staleTime: 5 * 60 * 1000,
   });
+
   const handlePageChange = useCallback((pageNumber: number) => {
     setPage(pageNumber);
   }, []);
 
   const totalPages = data
-    ? (data.totalPages ?? Math.ceil(data.total / PER_PAGE))
+    ? data.totalPages ?? Math.ceil(data.total / PER_PAGE)
     : 0;
 
   return (
@@ -65,24 +56,17 @@ export default function Notes({ initialData, tag }: NotesClientProps) {
             onPageChange={handlePageChange}
           />
         )}
-        <button onClick={handleCreateNote} className={styles.button}>
+
+        <Link href="/notes/actions/create" className={styles.button}>
           Create note +
-        </button>
+        </Link>
       </header>
 
-      {isModalOpen && (
-        <Modal onClose={closeModal}>
-          <NoteForm onClose={closeModal} />
-        </Modal>
-      )}
-
       {(isLoading || isFetching) && <LoadingSpinner />}
-
       {isError && <ErrorMessage message={error?.message || "Unknown error"} />}
-       {!isError && data?.notes && data.notes.length === 0 && (
+      {!isError && data?.notes && data.notes.length === 0 && (
         <ErrorMessage message="No notes found." />
       )}
-
       {data?.notes && data.notes.length > 0 && <NoteList notes={data.notes} />}
     </div>
   );

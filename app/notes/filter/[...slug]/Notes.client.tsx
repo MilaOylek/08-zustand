@@ -57,7 +57,7 @@ export default function Notes({ initialData, tag }: NotesClientProps) {
           />
         )}
 
-        <Link href="/notes/actions/create" className={styles.button}>
+        <Link href="/notes/action/create" className={styles.button}>
           Create note +
         </Link>
       </header>

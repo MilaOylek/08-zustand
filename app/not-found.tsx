@@ -8,7 +8,7 @@ import NotFoundClient from "./not-found-client";
   openGraph: {
     title: '404 — NoteHub',
     description: 'Page not found on NoteHub',
-    url: 'https://08-zustand-seven.vercel.app/not-found',
+    url: 'https://08-zustand-plum.vercel.app/not-found',
       
     siteName: "NoteHub",
     images: [
@@ -20,13 +20,13 @@ import NotFoundClient from "./not-found-client";
       },
     ],
   },
-  // twitter: {
-  //   card: 'summary_large_image',
-  //   title: 'NoteHub',
-  //   description: 'Manage your personal notes efficiently',
+  twitter: {
+    card: 'summary_large_image',
+    title: 'NoteHub',
+    description: 'Manage your personal notes efficiently',
       
-  //   images: ['https://ac.goit.global/fullstack/react/notehub-og-meta.jpg'],
-  // },
+    images: ['https://ac.goit.global/fullstack/react/notehub-og-meta.jpg'],
+  },
 };
 
 export default function NotFound() {
